@@ -27,29 +27,71 @@ class Cache{
    virtual int get(int) = 0; //get function
 
 };
-class LRUCache: public Cache{
-    LRUCache(int capacity);
-    ~LRUCache;
-    private: int present_capacity;
+class LRUCache: public Cache {
+  public:  LRUCache(int capacity);
+    //~LRUCache();
+    // Node* tail; // double linked list tail pointer
+    // Node* head; // double linked list head pointer
+    void set(int,int);
+    int get(int);
 };
 LRUCache::LRUCache(int capacity){
     cp = capacity;
-    present_capacity=0;
-    head->next=NULL;
-    head->prev=NULL;
-    tail->prev=NULL;
-    tail->next=NULL;
+    head = new Node(0,0);
+    tail = new Node(0,0);
+     head->next = tail;
+    // head->prev=NULL;
+     tail->prev=head;
+    // tail->next=NULL;
 }
 void LRUCache::set(int key,int value){
+  map<int,Node*>::iterator it = mp.find(key);
+  if (mp.size()==0){
+    Node *present= new Node(head,tail,key,value);
+    head->next = present;
+    tail->prev = present;
+    mp[key] = present;
+  }
+  else {
+    if(it!=mp.end()){
+      Node *present = it->second;
+      present->prev->next = present->next;
+      present->next->prev = present->prev;
+      present->next = head->next;
+      head->next->prev = present;
+      head->next = present;
+      present->prev = head;
+      present->value = value;
+    }
+    else{
 
+      if(mp.size() < cp){
+        Node *present = new Node(head,head->next,key,value);
+        head->next->prev = present;
+        head->next = present;
+        mp[key] = present;
+      }
+      else{
+
+        map<int,Node*>::iterator del_node = mp.find(tail->prev->key);
+        tail->prev = tail->prev->prev;
+        Node *present= new Node(head,head->next,key,value);
+        head->next->prev = present;
+        head->next = present;
+        mp[key] = present;
+        delete del_node->second;
+        mp.erase(del_node);
+      }
+    }
+  }
 }
 int LRUCache::get(int key){
-  Node* start = head;
   int value=-1;
   map<int,Node*>::iterator it;
-  it = mp.find(key)->second;
+  it = mp.find(key);
   if(it != mp.end()){
     value = it->second->value;
+    set(key,value);
   }
   return value;
 }

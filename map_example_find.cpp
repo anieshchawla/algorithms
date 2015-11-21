@@ -23,8 +23,8 @@ second.prev = &first;
 first.next = &second;
 mymap[11] = &first;
 mymap[12] = &second;
-it = mymap.find(1);
-
+it = mymap.find(12);
+std::cout<<"size is "<<mymap.size()<<'\n';
 if(it != mymap.end()){
     std::cout<<"mymap[11] value is = "<<it->second->value<<'\n';
 }
