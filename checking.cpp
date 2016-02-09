@@ -102,7 +102,7 @@ cout<<"mul= "<<mul<<endl;
 //---------------------------------------------------------------------------
 /*for(int i=0;i<10;i++) display();*/
 //---------------------------------------------------------------------------
-INT_PTR x ;
+/*INT_PTR x ;
 struct sigaction sa;
 //memset(&sa,0,sizeof(sigaction));
 //sigemptyset(&sa.sa_mask);
@@ -110,5 +110,6 @@ sa.sa_sigaction =  segfault_catch;
 //sa.sa_flags = SA_SIGINFO;
 
 sigaction(SIGSEGV,&sa,NULL);
-*x=190;
+*x=190;*/
+
 }
